@@ -1,9 +1,15 @@
+import NotFound from '../views/NotFound.js';
+import Dashboard from '../views/Dashboard.js';
+import Posts from '../views/Posts.js';
+import Settings from '../views/Settings.js';
+
 // [All routes]
+// [Assign each view class to respective routes]
 export const routes = [
-	{ path: '/not-found', view: () => console.log('404 loaded!') },
-	{ path: '/', view: () => console.log('Dashboard loaded!') },
-	{ path: '/posts', view: () => console.log('Posts loaded!') },
-	{ path: '/settings', view: () => console.log('Settings loaded!') },
+	{ path: '/not-found', view: NotFound },
+	{ path: '/', view: Dashboard },
+	{ path: '/posts', view: Posts },
+	{ path: '/settings', view: Settings },
 ];
 
 // [Navigation function]
@@ -27,7 +33,7 @@ export const router = async () => {
 
 	// [Get the route that matches with url]
 	const match = potentialMatches.find((item) => item.isMatch);
-	console.log(match);
+	// console.log(match);
 
 	// [If no route matches, default to 404]
 	if (!match) {
@@ -37,5 +43,7 @@ export const router = async () => {
 		};
 	}
 
-	match.route.view();
+	// Create new object called 'view' from the assigned class
+	const view = new match.route.view();
+	document.querySelector('#app').innerHTML = await view.getHtml();
 };
